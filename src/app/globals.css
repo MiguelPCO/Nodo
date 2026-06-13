@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/*
+  NODO design tokens — fuente de verdad: nodo/DESIGN.md.
+  Sin dark mode: NODO es papel cálido, siempre.
+*/
+@theme {
+  /* Color */
+  --color-paper: #f6efe3;
+  --color-card: #fffbf4;
+  --color-archive: #d8c7ad;
+  --color-ink: #24384a;
+  --color-ink-deep: #1a2d3c;
+  --color-walnut: #6b4e3d;
+  --color-text: #262421;
+  --color-muted: #8c8982;
+  --color-sage: #a7b29a;
+  --color-terracotta: #c8846a;
+  --color-terracotta-deep: #9b3a2a;
+  --color-gold: #b89b5e;
+
+  /* Tipografía */
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", monospace;
+
+  /* Sombras whisper — apiladas, baja opacidad, tono cálido */
+  --shadow-l1: 0 1px 3px rgb(38 36 33 / 0.06);
+  --shadow-l2: 0 1px 3px rgb(38 36 33 / 0.06), 0 4px 12px rgb(38 36 33 / 0.04);
+  --shadow-l3: 0 4px 16px rgb(38 36 33 / 0.1), 0 1px 3px rgb(38 36 33 / 0.06);
+  --shadow-l4: 0 8px 32px rgb(38 36 33 / 0.12), 0 2px 8px rgb(38 36 33 / 0.08);
+  --shadow-ink-hover: 0 2px 8px rgb(36 56 74 / 0.18);
+
+  /* Radius — botón 12px (nunca pill), card 16px */
+  --radius-button: 12px;
+  --radius-card: 16px;
+
+  /* Easing editorial: lento, sereno */
+  --ease-archive: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  background: var(--color-paper);
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-archive);
+  color: var(--color-walnut);
+}
+
+/* Focus visible global — anillo ink con offset (DESIGN.md) */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Tipos de display: serif emocional, tracking negativo obligatorio en grande */
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 6vw, 5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.type-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.type-h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+}
+
+.type-h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 1.3;
+}
+
+.type-mono-label {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.045em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* Textura de papel: grain sutil con SVG inline, atmósfera sin peso */
+.paper-grain {
+  position: relative;
+}
+
+.paper-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.42 0 0 0 0 0.36 0 0 0 0 0.28 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Banda beige al 30% para alternancia de secciones */
+.band-beige {
+  background: color-mix(in srgb, var(--color-archive) 30%, var(--color-paper));
+}
+
+/* Línea de archivo: separador con doble regla fina, como ficha */
+.archive-rule {
+  border-top: 1px solid var(--color-archive);
+  position: relative;
+}
+
+.archive-rule::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-archive) 45%, transparent);
+}

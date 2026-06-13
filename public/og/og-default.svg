@@ -1,0 +1,14 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#F6EFE3"/>
+  <rect x="48" y="48" width="1104" height="534" rx="24" fill="#FFFBF4" stroke="#D8C7AD" stroke-width="2"/>
+  <text x="110" y="150" font-family="Georgia, serif" font-size="30" letter-spacing="10" fill="#8C8982">NODO / 2026 / MB / A01-0042</text>
+  <text x="104" y="320" font-family="Georgia, serif" font-size="96" fill="#6B4E3D" letter-spacing="-2">Guarda lo que une.</text>
+  <text x="106" y="400" font-family="Arial, sans-serif" font-size="34" fill="#262421" opacity="0.8">Cápsulas de memoria para historias, voces y objetos</text>
+  <text x="106" y="448" font-family="Arial, sans-serif" font-size="34" fill="#262421" opacity="0.8">que merecen volver.</text>
+  <g transform="translate(960, 420)" stroke="#6B4E3D" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 60l70-26 70 26-70 26-70-26z"/>
+    <path d="M10 60v50l70 26v-50"/>
+    <path d="M150 60v50l-70 26"/>
+  </g>
+  <text x="104" y="540" font-family="Georgia, serif" font-size="44" letter-spacing="16" fill="#24384A">NODO</text>
+</svg>
