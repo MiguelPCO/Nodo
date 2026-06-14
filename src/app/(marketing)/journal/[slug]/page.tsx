@@ -11,6 +11,8 @@ import { mdxComponents } from "@/components/journal/mdx-components";
 import { getAllPosts, getPost } from "@/lib/journal";
 import { articleSchema } from "@/lib/schema";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
 }

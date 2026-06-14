@@ -60,24 +60,28 @@ export default async function CapsulePage({
     .eq("capsule_id", id)
     .order("created_at", { ascending: false });
 
-  const memories = await Promise.all(
-    (rawMemories ?? []).map(async (m) => {
-      let signedUrl: string | undefined;
-      if (m.type === "photo" && m.storage_key) {
-        const { data } = await supabase.storage
-          .from("capsule-media")
-          .createSignedUrl(m.storage_key, 3600);
-        signedUrl = data?.signedUrl ?? undefined;
-      }
-      return {
-        id: m.id,
-        type: m.type as "photo" | "note",
-        signedUrl,
-        caption: m.caption,
-        createdAt: m.created_at,
-      };
-    })
-  );
+  // Batch-fetch all signed URLs in one Storage RPC call instead of N individual calls
+  const photoKeys = (rawMemories ?? [])
+    .filter((m) => m.type === "photo" && m.storage_key)
+    .map((m) => m.storage_key as string);
+
+  const signedUrlMap: Record<string, string> = {};
+  if (photoKeys.length > 0) {
+    const { data: signedItems } = await supabase.storage
+      .from("capsule-media")
+      .createSignedUrls(photoKeys, 3600);
+    for (const item of signedItems ?? []) {
+      if (item.signedUrl && item.path) signedUrlMap[item.path] = item.signedUrl;
+    }
+  }
+
+  const memories = (rawMemories ?? []).map((m) => ({
+    id: m.id,
+    type: m.type as "photo" | "note",
+    signedUrl: m.storage_key ? signedUrlMap[m.storage_key] : undefined,
+    caption: m.caption,
+    createdAt: m.created_at,
+  }));
 
   const Illustration = occasionIllustration[capsule.occasion as Occasion];
   const label = occasionLabel[capsule.occasion as Occasion];

@@ -5,7 +5,9 @@ import { cookies } from "next/headers";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/dashboard";
+  const rawNext = searchParams.get("next") ?? "/dashboard";
+  // Reject anything that isn't a relative path (prevents open-redirect via "//evil.com" or "@evil.com")
+  const next = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/dashboard";
 
   if (!code) {
     return NextResponse.redirect(`${origin}/auth/login?error=missing_code`);

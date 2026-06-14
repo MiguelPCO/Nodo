@@ -75,6 +75,8 @@ export function MemoryUploader({ capsuleId, familyId }: Props) {
         reset();
         router.refresh();
       } catch (e) {
+        // Compensating delete — remove orphaned storage object if DB insert failed
+        getSupabaseBrowser().storage.from("capsule-media").remove([key]);
         setError(e instanceof Error ? e.message : "Error desconocido");
       }
     });

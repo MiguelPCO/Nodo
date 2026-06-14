@@ -52,7 +52,8 @@ export async function createCapsule(input: CreateCapsuleInput) {
       .single();
 
     if (familyErr || !family) {
-      throw new Error(`Error creando familia: ${familyErr?.message ?? "sin datos"} (code: ${familyErr?.code})`);
+      console.error("families insert error:", familyErr);
+      throw new Error("No se pudo crear el archivo familiar");
     }
 
     const { error: memberErr } = await supabase.from("family_members").insert({
@@ -62,7 +63,10 @@ export async function createCapsule(input: CreateCapsuleInput) {
     });
 
     if (memberErr) {
-      throw new Error(`Error añadiendo miembro: ${memberErr.message} (code: ${memberErr.code})`);
+      console.error("family_members insert error:", memberErr);
+      // Compensating delete — avoids orphaned family row on retry
+      await supabase.from("families").delete().eq("id", family.id);
+      throw new Error("No se pudo configurar la familia");
     }
 
     familyId = family.id;
@@ -81,7 +85,8 @@ export async function createCapsule(input: CreateCapsuleInput) {
     .single();
 
   if (error || !capsule) {
-    throw new Error(`Error creando cápsula: ${error?.message ?? "sin datos"} (code: ${error?.code})`);
+    console.error("capsules insert error:", error);
+    throw new Error("No se pudo crear la cápsula");
   }
 
   return { id: capsule.id };
